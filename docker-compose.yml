@@ -1,0 +1,33 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/usr/src/app
+      - app_node_modules:/usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: plataforma_educacional
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - plataforma-network
+
+volumes:
+  postgres_data:
+  app_node_modules:
+networks:
+  plataforma-network:
+    external: true
